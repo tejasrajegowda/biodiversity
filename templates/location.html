@@ -33,17 +33,12 @@
     </div>
 
     <main class="form-signin w-100 m-auto">
-        <form method="POST" action="/species">
-            <h1 class="h3 mb-3 fw-normal">Add location</h1>
+        <form method="POST" action="/locations">
+            <h1 class="h3 mb-3 fw-normal">Add Location</h1>
 
             <div class="form-floating">
-                <input type="text" class="form-control" id="speciesId" name="speciesId" placeholder="Species ID" required>
-                <label for="speciesId">Species ID</label>
-            </div>
-
-            <div class="form-floating">
-                <input type="text" class="form-control" id="commonName" name="commonName" placeholder="Common Name" required>
-                <label for="commonName">Common Name</label>
+                <input type="text" class="form-control" id="locationId" name="locationId" placeholder="Location ID" required>
+                <label for="locationId">Location ID</label>
             </div>
 
             <div class="form-floating">
@@ -52,26 +47,21 @@
             </div>
 
             <div class="form-floating">
-                <input type="text" class="form-control" id="habitatType" name="habitatType" placeholder="Habitat Type" required>
-                <label for="habitatType">Habitat Type</label>
+                <input type="text" class="form-control" id="geographicRegion" name="geographicRegion" placeholder="Geographic Region" required>
+                <label for="geographicRegion">Geographic Region</label>
             </div>
 
             <div class="form-floating">
-                <input type="text" class="form-control" id="systemType" name="systemType" placeholder="System Type" required>
-                <label for="systemType">System Type</label>
+                <input type="text" class="form-control" id="state" name="state" placeholder="State" required>
+                <label for="state">State</label>
             </div>
 
             <div class="form-floating">
-                <input type="text" class="form-control" id="lifespan" name="lifespan" placeholder="Lifespan" required>
-                <label for="lifespan">Lifespan</label>
+                <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode" required>
+                <label for="pincode">Pincode</label>
             </div>
 
-            <div class="form-floating">
-                <input type="text" class="form-control" id="generationLength" name="generationLength" placeholder="Generation Length" required>
-                <label for="generationLength">Generation Length</label>
-            </div>
-
-            <button class="btn btn-primary w-100 py-2" type="submit">Add Species</button>
+            <button class="btn btn-primary w-100 py-2" type="submit">Add Location</button>
         </form>
     </main>
 
