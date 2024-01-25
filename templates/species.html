@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+<head>
+    <script src="../static/js/color-modes.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.118.2">
+    <title>Add Species · Bootstrap v5.3</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Your existing styles here */
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="../static/sign-in.css" rel="stylesheet">
+</head>
+<body class="d-flex align-items-center py-4 bg-body-tertiary">
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+        <!-- Your existing SVG symbols here -->
+    </svg>
+
+    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+        <!-- Your existing theme toggle dropdown here -->
+    </div>
+
+    <main class="form-signin w-100 m-auto">
+        <form method="POST" action="/species">
+            <h1 class="h3 mb-3 fw-normal">Add Species</h1>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" id="speciesId" name="speciesId" placeholder="Species ID" required>
+                <label for="speciesId">Species ID</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" id="commonName" name="commonName" placeholder="Common Name" required>
+                <label for="commonName">Common Name</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" id="scientificName" name="scientificName" placeholder="Scientific Name" required>
+                <label for="scientificName">Scientific Name</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" id="habitatType" name="habitatType" placeholder="Habitat Type" required>
+                <label for="habitatType">Habitat Type</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" id="systemType" name="systemType" placeholder="System Type" required>
+                <label for="systemType">System Type</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" id="lifespan" name="lifespan" placeholder="Lifespan" required>
+                <label for="lifespan">Lifespan</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="text" class="form-control" id="generationLength" name="generationLength" placeholder="Generation Length" required>
+                <label for="generationLength">Generation Length</label>
+            </div>
+
+            <button class="btn btn-primary w-100 py-2" type="submit">Add Species</button>
+        </form>
+    </main>
+
+    <script src="../static/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
