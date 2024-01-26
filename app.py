@@ -3,6 +3,7 @@ from flask_mysqldb import MySQL
 
 app = Flask(__name__)
 
+
 # Configure MySQL connection
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
@@ -103,7 +104,44 @@ def add_species():
         return jsonify({"message": "Species added successfully"}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
+
+
+
+# Route to show the SPECIES update form
+@app.route('/species/<int:species_id>', methods=['GET'])
+def show_species_upd_form(species_id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM species WHERE SPECIES_ID = %s', (species_id,))
+    species_data = cur.fetchone()
+    cur.close()
+    return render_template('upd_species.html', species_data=species_data)
+
+
+# Route to handle SPECIES update form submission
+@app.route('/species/<int:species_id>', methods=['POST'])
+def update_species(species_id):
+    try:
+        # Retrieve data from the submitted form
+        common_name = request.form.get('commonName')
+        scientific_name = request.form.get('scientificName')
+        habitat_type = request.form.get('habitatType')
+        system_type = request.form.get('systemType')
+        lifespan = request.form.get('lifespan')
+        generation_length = request.form.get('generationLength')
+
+        # Use Flask-MySQLdb to execute an UPDATE query
+        cur = mysql.connection.cursor()
+        query = "UPDATE species SET COMMON_NAME=%s, SCIENTIFIC_NAME=%s, HABITAT_TYPE=%s, SYSTEM_TYPE=%s, LIFESPAN=%s, GENERATION_LENGTH=%s WHERE SPECIES_ID=%s"
+        values = (common_name, scientific_name, habitat_type, system_type, lifespan, generation_length, species_id)
+        cur.execute(query, values)
+        mysql.connection.commit()
+        cur.close()
+
+        # Return a success message
+        return jsonify({"message": "Species updated successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 
 
@@ -199,6 +237,39 @@ def add_population():
         return jsonify({"error": str(e)}), 500
     
 
+
+
+# Route to show the LOCATION update form
+@app.route('/location/<int:location_id>', methods=['GET'])
+def show_location_upd_form(location_id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM location WHERE LOCATION_ID = %s', (location_id,))
+    location_data = cur.fetchone()
+    cur.close()
+    return render_template('upd_location.html', location_data=location_data)
+
+# Route to handle LOCATION update form submission
+@app.route('/location/<int:location_id>', methods=['POST'])
+def update_location(location_id):
+    try:
+        # Retrieve data from the submitted form
+        scientific_name = request.form.get('scientificName')
+        geographic_region = request.form.get('geographicRegion')
+        state = request.form.get('state')
+        pincode = request.form.get('pincode')
+
+        # Use Flask-MySQLdb to execute an UPDATE query
+        cur = mysql.connection.cursor()
+        query = "UPDATE location SET SCIENTIFIC_NAME=%s, GEOGRAPHIC_REGION=%s, STATE=%s, PINCODE=%s WHERE LOCATION_ID=%s"
+        values = (scientific_name, geographic_region, state, pincode, location_id)
+        cur.execute(query, values)
+        mysql.connection.commit()
+        cur.close()
+
+        # Return a success message
+        return jsonify({"message": "Location updated successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 
