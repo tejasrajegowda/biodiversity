@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, abort, jsonify
 from flask_mysqldb import MySQL
 
 app = Flask(__name__)
@@ -142,6 +142,29 @@ def update_species(species_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
+@app.route('/delete_species/<int:species_id>', methods=['GET', 'POST'])
+def delete_species(species_id):
+    # Check if the species with the given ID exists
+    if not species_exists(species_id):
+        abort(404,f"Species ID {species_id} not present or deleted already")  # Return a 404 Not Found error if the species doesn't exist
+
+    if request.method == 'GET':
+        return render_template('delete_species.html', species_id=species_id)
+    elif request.method == 'POST':
+        cur = mysql.connection.cursor()
+        cur.execute('DELETE FROM species WHERE species_id = %s', (species_id,))
+        mysql.connection.commit()
+        cur.close()
+        return jsonify({'message': 'Species deleted successfully'})
+
+# Helper function to check if a species with the given ID exists
+def species_exists(species_id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT species_id FROM species WHERE species_id = %s', (species_id,))
+    result = cur.fetchone()
+    cur.close()
+    return result is not None
 
 
 
