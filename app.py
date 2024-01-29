@@ -104,7 +104,7 @@ def get_species():
     cur.execute('SELECT * FROM species')
     species_data = cur.fetchall()
     cur.close()
-    return jsonify(species_data)
+    return render_template('species_disp.html', species_data=species_data)
 
 # Route to show the SPECIES form
 @app.route('/species', methods=['GET'])
@@ -294,6 +294,46 @@ def add_population():
 
 
 
+
+
+# Display all locations
+@app.route('/location_disp', methods=['GET'])
+def get_location():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM location')
+    location_data = cur.fetchall()
+    cur.close()
+    return render_template('location_disp.html', location_data=location_data)
+
+# Route to show the form for adding location
+@app.route('/location', methods=['GET'])
+def show_location_form():
+    return render_template('location.html')
+
+# Route to handle form submission for adding location
+@app.route('/location', methods=['POST'])
+def add_location():
+    try:
+        # Retrieve data from the submitted form
+        location_id = request.form.get('locationId')
+        scientific_name = request.form.get('scientificName')
+        geographic_region = request.form.get('geographicRegion')
+        state = request.form.get('state')
+        pincode = request.form.get('pincode')
+
+        # Use Flask-MySQLdb to execute an INSERT query
+        cur = mysql.connection.cursor()
+        query = "INSERT INTO location (LOCATION_ID, SCIENTIFIC_NAME, GEOGRAPHIC_REGION, STATE, PINCODE) VALUES (%s, %s, %s, %s, %s)"
+        values = (location_id, scientific_name, geographic_region, state, pincode)
+        cur.execute(query, values)
+        mysql.connection.commit()
+        cur.close()
+
+        # Return a success message
+        return jsonify({"message": "Location added successfully"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 # Route to show the LOCATION update form
 @app.route('/location/<int:location_id>', methods=['GET'])
 def show_location_upd_form(location_id):
@@ -326,48 +366,29 @@ def update_location(location_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+#delete location operation
+@app.route('/delete_location/<string:location_id>', methods=['GET', 'POST'])
+def delete_location(location_id):
+    # Check if the location with the given ID exists
+    if not location_exists(location_id):
+        abort(404, f"Location ID {location_id} not present or deleted already")  # Return a 404 Not Found error if the location doesn't exist
 
-
-
-
-# Display all locations
-@app.route('/location_disp', methods=['GET'])
-def get_location():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM location')
-    location_data = cur.fetchall()
-    cur.close()
-    return jsonify(location_data)
-
-# Route to show the form for adding location
-@app.route('/location', methods=['GET'])
-def show_location_form():
-    return render_template('location.html')
-
-# Route to handle form submission for adding location
-@app.route('/location', methods=['POST'])
-def add_location():
-    try:
-        # Retrieve data from the submitted form
-        location_id = request.form.get('locationId')
-        scientific_name = request.form.get('scientificName')
-        geographic_region = request.form.get('geographicRegion')
-        state = request.form.get('state')
-        pincode = request.form.get('pincode')
-
-        # Use Flask-MySQLdb to execute an INSERT query
+    if request.method == 'GET':
+        return render_template('delete_location.html', location_id=location_id)
+    elif request.method == 'POST':
         cur = mysql.connection.cursor()
-        query = "INSERT INTO location (LOCATION_ID, SCIENTIFIC_NAME, GEOGRAPHIC_REGION, STATE, PINCODE) VALUES (%s, %s, %s, %s, %s)"
-        values = (location_id, scientific_name, geographic_region, state, pincode)
-        cur.execute(query, values)
+        cur.execute('DELETE FROM location WHERE LOCATION_ID = %s', (location_id,))
         mysql.connection.commit()
         cur.close()
+        return jsonify({'message': 'Location deleted successfully'})
 
-        # Return a success message
-        return jsonify({"message": "Location added successfully"}), 201
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
+# Helper function to check if a location with the given ID exists
+def location_exists(location_id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT LOCATION_ID FROM location WHERE LOCATION_ID = %s', (location_id,))
+    result = cur.fetchone()
+    cur.close()
+    return result is not None
 
 
 
