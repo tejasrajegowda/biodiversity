@@ -26,9 +26,9 @@ def show_home():
 def show_biological_profiles():
     return render_template('links.html')
 
-# Route for login page
-@app.route('/login', methods=['GET', 'POST'])
-def login():
+# Route for signin page
+@app.route('/signin', methods=['GET', 'POST'])
+def signin():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -41,14 +41,14 @@ def login():
         cursor.close()
 
         if user:
-            # Redirect to the homepage upon successful login
+            # Redirect to the homepage upon successful signin
             return render_template('home.html')
         else:
-            # Display an error message if login fails
+            # Display an error message if signin fails
             error = 'Invalid email or password. Please try again.'
-            return render_template('login.html', error=error)
+            return render_template('signin.html', error=error)
 
-    return render_template('login.html')
+    return render_template('signin.html')
 
 
 
