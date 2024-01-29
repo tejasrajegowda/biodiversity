@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, abort, jsonify
+from flask import Flask, render_template, request, abort, jsonify, redirect, url_for
 from flask_mysqldb import MySQL
 
 app = Flask(__name__)
@@ -17,14 +17,39 @@ mysql = MySQL(app)
 
 
 #Homepage
-@app.route('/', methods=['GET'])
+@app.route('/home', methods=['GET'])
 def show_home():
-    return render_template('index.html')
+    return render_template('home.html')
 
 #Enter biological profiles
 @app.route('/links', methods=['GET'])
 def show_biological_profiles():
     return render_template('links.html')
+
+# Route for login page
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+
+        # Check credentials in the database
+        cursor = mysql.connection.cursor()
+        query = "SELECT * FROM USERS WHERE EMAIL = %s AND PASSWORD = %s"
+        cursor.execute(query, (email, password))
+        user = cursor.fetchone()
+        cursor.close()
+
+        if user:
+            # Redirect to the homepage upon successful login
+            return render_template('home.html')
+        else:
+            # Display an error message if login fails
+            error = 'Invalid email or password. Please try again.'
+            return render_template('login.html', error=error)
+
+    return render_template('login.html')
+
 
 
 # Display all users
@@ -62,7 +87,7 @@ def add_user():
         cur.close()
 
         # Return a success message
-        return jsonify({"message": "User added successfully"}), 201
+        return redirect('/home')
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
