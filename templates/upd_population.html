@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.118.2">
-    <title>Add Species · Bootstrap v5.3</title>
+    <title>Update Population · Bootstrap v5.3</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
 
@@ -33,40 +33,35 @@
     </div>
 
     <main class="form-signin w-100 m-auto">
-        <form method="POST" action="/population">
-            <h1 class="h3 mb-3 fw-normal">Add Population</h1>
+        <form method="POST" action="/population/{{ population_data.POPULATION_ID }}">
+            <h1 class="h3 mb-3 fw-normal">Update Population</h1>
 
             <div class="form-floating">
-                <input type="text" class="form-control" id="populationId" name="populationId" placeholder="Population ID" required>
-                <label for="populationId">Population ID</label>
-            </div>
-
-            <div class="form-floating">
-                <input type="text" class="form-control" id="scientificName" name="scientificName" placeholder="Scientific Name" required>
+                <input type="text" class="form-control" id="scientificName" name="scientificName" placeholder="Scientific Name" value="{{ population_data.SCIENTIFIC_NAME }}" required>
                 <label for="scientificName">Scientific Name</label>
             </div>
 
             <div class="form-floating">
-                <input type="text" class="form-control" id="conservationStatus" name="conservationStatus" placeholder="Conservation Status" required>
+                <input type="text" class="form-control" id="conservationStatus" name="conservationStatus" placeholder="Conservation Status" value="{{ population_data.CONSERVATION_STATUS }}" required>
                 <label for="conservationStatus">Conservation Status</label>
             </div>
 
             <div class="form-floating">
-                <input type="text" class="form-control" id="populationCount" name="populationCount" placeholder="Population Count" required>
+                <input type="text" class="form-control" id="populationCount" name="populationCount" placeholder="Population Count" value="{{ population_data.POPULATION_COUNT }}" required>
                 <label for="populationCount">Population Count</label>
             </div>
 
             <div class="form-floating">
-                <input type="text" class="form-control" id="populationTrend" name="populationTrend" placeholder="Population Trend" required>
+                <input type="text" class="form-control" id="populationTrend" name="populationTrend" placeholder="Population Trend" value="{{ population_data.POPULATION_TREND }}" required>
                 <label for="populationTrend">Population Trend</label>
             </div>
 
             <div class="form-floating">
-                <input type="date" class="form-control" id="dateAssessed" name="dateAssessed" placeholder="Date Assessed" required>
+                <input type="date" class="form-control" id="dateAssessed" name="dateAssessed" placeholder="Date Assessed" value="{{ population_data.DATE_ASSESSED }}" required>
                 <label for="dateAssessed">Date Assessed</label>
             </div>
 
-            <button class="btn btn-primary w-100 py-2" type="submit">Add Population</button>
+            <button class="btn btn-primary w-100 py-2" type="submit">Update Population</button>
         </form>
     </main>
 
