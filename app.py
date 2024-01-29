@@ -16,8 +16,15 @@ mysql = MySQL(app)
 
 
 
+#Homepage
+@app.route('/', methods=['GET'])
+def show_home():
+    return render_template('index.html')
 
-
+#Enter biological profiles
+@app.route('/links', methods=['GET'])
+def show_biological_profiles():
+    return render_template('links.html')
 
 
 # Display all users
