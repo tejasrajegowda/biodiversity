@@ -33,7 +33,7 @@
     </div>
 
     <main class="form-signin w-100 m-auto">
-        <form method="POST" action="/signin">
+        <form method="POST" action="/">
             <h1 class="h3 mb-3 fw-normal">Sign In</h1>
             {% if error %}
             <p style="color: red;">{{ error }}</p>
@@ -50,6 +50,9 @@
 
             <button class="btn btn-primary w-100 py-2" type="submit">Sign In</button>
         </form>
+
+        <!-- Added anchor tag for registration link -->
+        <p class="mt-3">Don't have an account already?<br> <a href="../users">Register here</a></p>
     </main>
 
     <script src="../static/js/bootstrap.bundle.min.js"></script>

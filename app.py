@@ -26,8 +26,17 @@ def show_home():
 def show_biological_profiles():
     return render_template('links.html')
 
+#Species Insights
+@app.route('/disp_links', methods=['GET'])
+def show_species_insights():
+    return render_template('disp_links.html')
+
+
+
+
+
 # Route for signin page
-@app.route('/signin', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def signin():
     if request.method == 'POST':
         email = request.form['email']
@@ -95,7 +104,7 @@ def add_user():
 
 
 
-
+#SPECIES
 
 #disp SPECIES form
 @app.route('/species_disp', methods=['GET'])
@@ -174,7 +183,7 @@ def update_species(species_id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
+#Route to handle SPECIES delete form submission
 @app.route('/delete_species/<int:species_id>', methods=['GET', 'POST'])
 def delete_species(species_id):
     # Check if the species with the given ID exists
@@ -202,7 +211,7 @@ def species_exists(species_id):
 
 
 
-
+#TAXONOMY
 
 
 # Display all taxonomy entries
@@ -212,7 +221,7 @@ def get_taxonomy():
     cur.execute('SELECT * FROM taxonomy')
     taxonomy_data = cur.fetchall()
     cur.close()
-    return jsonify(taxonomy_data)
+    return render_template('taxonomy_disp.html', taxonomy_data=taxonomy_data)
 
 # Route to show the form for adding taxonomy entry
 @app.route('/taxonomy', methods=['GET'])
@@ -246,11 +255,71 @@ def add_taxonomy():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# Route to show the TAXONOMY update form
+@app.route('/taxonomy/<int:taxonomy_id>', methods=['GET'])
+def show_taxnomy_upd_form(taxonomy_id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM TAXONOMY WHERE TAXONOMY_ID = %s', (taxonomy_id,))
+    taxonomy_data = cur.fetchone()
+    cur.close()
+    return render_template('upd_taxonomy.html', taxonomy_data=taxonomy_data)
+
+# Route to handle TAXONOMY update form submission
+@app.route('/taxonomy/<int:taxonomy_id>', methods=['POST'])
+def update_taxonomy(taxonomy_id):
+    try:
+        # Retrieve data from the submitted form
+        scientific_name = request.form.get('scientificName')
+        kingdom = request.form.get('kingdom')
+        phylum = request.form.get('phylum')
+        sp_class = request.form.get('spClass')
+        orders = request.form.get('orders')
+        family = request.form.get('family')
+        genus = request.form.get('genus')
+
+        # Use Flask-MySQLdb to execute an UPDATE query
+        cur = mysql.connection.cursor()
+        query = "UPDATE taxonomy SET SCIENTIFIC_NAME=%s, KINGDOM=%s, PHYLUM=%s, SP_CLASS=%s, ORDERS=%s, FAMILY=%s, GENUS=%s WHERE TAXONOMY_ID=%s"
+        values = (scientific_name, kingdom, phylum, sp_class, orders, family, genus, taxonomy_id)
+        cur.execute(query, values)
+        mysql.connection.commit()
+        cur.close()
+
+        # Return a success message
+        return jsonify({"message": "Taxonomy updated successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
+# delete taxonomy operation
+@app.route('/delete_taxonomy/<string:taxonomy_id>', methods=['GET', 'POST'])
+def delete_taxonomy(taxonomy_id):
+    # Check if the taxonomy with the given ID exists
+    if not taxonomy_exists(taxonomy_id):
+        abort(404, f"Taxonomy ID {taxonomy_id} not present or deleted already")  # Return a 404 Not Found error if the taxonomy doesn't exist
+
+    if request.method == 'GET':
+        return render_template('delete_taxonomy.html', taxonomy_id=taxonomy_id)
+    elif request.method == 'POST':
+        cur = mysql.connection.cursor()
+        cur.execute('DELETE FROM taxonomy WHERE TAXONOMY_ID = %s', (taxonomy_id,))
+        mysql.connection.commit()
+        cur.close()
+        return jsonify({'message': 'Taxonomy deleted successfully'})
+
+# Helper function to check if a taxonomy with the given ID exists
+def taxonomy_exists(taxonomy_id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT TAXONOMY_ID FROM taxonomy WHERE TAXONOMY_ID = %s', (taxonomy_id,))
+    result = cur.fetchone()
+    cur.close()
+    return result is not None
 
 
 
 
-
+#POPULATION
 
 # Display all populations
 @app.route('/population_disp', methods=['GET'])
@@ -259,7 +328,7 @@ def get_population():
     cur.execute('SELECT * FROM population')
     population_data = cur.fetchall()
     cur.close()
-    return jsonify(population_data)
+    return render_template('population_disp.html', population_data=population_data)
 
 # Route to show the form for adding population
 @app.route('/population', methods=['GET'])
@@ -292,9 +361,70 @@ def add_population():
         return jsonify({"error": str(e)}), 500
     
 
+# Route to show the POPULATION update form
+@app.route('/population/<string:population_id>', methods=['GET'])
+def show_population_upd_form(population_id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM POPULATION WHERE POPULATION_ID = %s', (population_id,))
+    population_data = cur.fetchone()
+    cur.close()
+    return render_template('upd_population.html', population_data=population_data)
+
+# Route to handle POPULATION update form submission
+@app.route('/population/<string:population_id>', methods=['POST'])
+def update_population(population_id):
+    try:
+        # Retrieve data from the submitted form
+        scientific_name = request.form.get('scientificName')
+        conservation_status = request.form.get('conservationStatus')
+        population_count = request.form.get('populationCount')
+        population_trend = request.form.get('populationTrend')
+        date_assessed = request.form.get('dateAssessed')
+
+        # Use Flask-MySQLdb to execute an UPDATE query
+        cur = mysql.connection.cursor()
+        query = "UPDATE population SET SCIENTIFIC_NAME=%s, CONSERVATION_STATUS=%s, POPULATION_COUNT=%s, POPULATION_TREND=%s, DATE_ASSESSED=%s WHERE POPULATION_ID=%s"
+        values = (scientific_name, conservation_status, population_count, population_trend, date_assessed, population_id)
+        cur.execute(query, values)
+        mysql.connection.commit()
+        cur.close()
+
+        # Return a success message
+        return jsonify({"message": "Population updated successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 
+
+# delete population operation
+@app.route('/delete_population/<string:population_id>', methods=['GET', 'POST'])
+def delete_population(population_id):
+    # Check if the population with the given ID exists
+    if not population_exists(population_id):
+        abort(404, f"Population ID {population_id} not present or deleted already")  # Return a 404 Not Found error if the population doesn't exist
+
+    if request.method == 'GET':
+        return render_template('delete_population.html', population_id=population_id)
+    elif request.method == 'POST':
+        cur = mysql.connection.cursor()
+        cur.execute('DELETE FROM population WHERE POPULATION_ID = %s', (population_id,))
+        mysql.connection.commit()
+        cur.close()
+        return jsonify({'message': 'Population deleted successfully'})
+
+# Helper function to check if a population with the given ID exists
+def population_exists(population_id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT POPULATION_ID FROM population WHERE POPULATION_ID = %s', (population_id,))
+    result = cur.fetchone()
+    cur.close()
+    return result is not None
+
+
+
+
+#LOCATION
 
 # Display all locations
 @app.route('/location_disp', methods=['GET'])
@@ -392,16 +522,17 @@ def location_exists(location_id):
 
 
 
-
+#WILDLIFE RESERVE
 
 # Display all wildlife reserves
 @app.route('/wildlife_reserve_disp', methods=['GET'])
-def get_wildlife_reserves():
+def get_wildlife_reserve():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM wildlife_reserve')
-    reserves_data = cur.fetchall()
+    wildlife_reserve_data = cur.fetchall()
     cur.close()
-    return jsonify(reserves_data)
+    return render_template('wildlife_reserve_disp.html', wildlife_reserve_data=wildlife_reserve_data)
+
 
 # Route to show the form for adding wildlife reserve
 @app.route('/wildlife_reserve', methods=['GET'])
@@ -435,7 +566,65 @@ def add_wildlife_reserve():
         return jsonify({"error": str(e)}), 500
 
 
+# Route to show the WILDLIFE_RESERVE update form
+@app.route('/wildlife_reserve/<int:reserve_id>', methods=['GET'])
+def show_wildlife_reserve_upd_form(reserve_id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM WILDLIFE_RESERVE WHERE RESERVE_ID = %s', (reserve_id,))
+    reserve_data = cur.fetchone()
+    cur.close()
+    return render_template('upd_wildlife_reserve.html', reserve_data=reserve_data)
 
+# Route to handle WILDLIFE_RESERVE update form submission
+@app.route('/wildlife_reserve/<int:reserve_id>', methods=['POST'])
+def update_wildlife_reserve(reserve_id):
+    try:
+        # Retrieve data from the submitted form
+        name = request.form.get('name')
+        coordinates = request.form.get('coordinates')
+        area = request.form.get('area')
+        pincode = request.form.get('pincode')
+        iconic_species = request.form.get('iconicSpecies')
+        established_year = request.form.get('establishedYear')
+
+        # Use Flask-MySQLdb to execute an UPDATE query
+        cur = mysql.connection.cursor()
+        query = "UPDATE wildlife_reserve SET NAME=%s, COORDINATES=%s, AREA=%s, PINCODE=%s, ICONIC_SPECIES=%s, ESTABLISHED_YEAR=%s WHERE RESERVE_ID=%s"
+        values = (name, coordinates, area, pincode, iconic_species, established_year, reserve_id)
+        cur.execute(query, values)
+        mysql.connection.commit()
+        cur.close()
+
+        # Return a success message
+        return jsonify({"message": "Wildlife reserve updated successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
+# delete wildlife reserve operation
+@app.route('/delete_wildlife_reserve/<int:reserve_id>', methods=['GET', 'POST'])
+def delete_wildlife_reserve(reserve_id):
+    # Check if the wildlife reserve with the given ID exists
+    if not wildlife_reserve_exists(reserve_id):
+        abort(404, f"Wildlife Reserve ID {reserve_id} not present or deleted already")  # Return a 404 Not Found error if the wildlife reserve doesn't exist
+
+    if request.method == 'GET':
+        return render_template('delete_wildlife_reserve.html', reserve_id=reserve_id)
+    elif request.method == 'POST':
+        cur = mysql.connection.cursor()
+        cur.execute('DELETE FROM wildlife_reserve WHERE RESERVE_ID = %s', (reserve_id,))
+        mysql.connection.commit()
+        cur.close()
+        return jsonify({'message': 'Wildlife Reserve deleted successfully'})
+
+# Helper function to check if a wildlife reserve with the given ID exists
+def wildlife_reserve_exists(reserve_id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT RESERVE_ID FROM wildlife_reserve WHERE RESERVE_ID = %s', (reserve_id,))
+    result = cur.fetchone()
+    cur.close()
+    return result is not None
 
 
 

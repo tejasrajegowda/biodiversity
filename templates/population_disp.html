@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+<head>
+    <script src="../static/js/color-modes.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.118.2">
+    <title>Population Display · Bootstrap v5.3</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
+
+    <!-- Bootstrap CSS -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Your existing styles here -->
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid white;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="../static/sign-in.css" rel="stylesheet">
+</head>
+<body>
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+        <!-- Your existing SVG symbols here -->
+    </svg>
+
+    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+        <!-- Your existing theme toggle dropdown here -->
+    </div>
+
+    <main class="form-signin">
+        <form method="POST" action="/population">
+            <h1 class="h3 mb-3 fw-normal">Population Display</h1>
+
+            <!-- Your table code here -->
+            <table>
+                <tr>
+                    <th>POPULATION_ID</th>
+                    <th>SCIENTIFIC_NAME</th>
+                    <th>CONSERVATION_STATUS</th>
+                    <th>POPULATION_COUNT</th>
+                    <th>POPULATION_TREND</th>
+                    <th>DATE_ASSESSED</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+                
+                {% for population in population_data %}
+                <tr>
+                    <td>{{ population.POPULATION_ID }}</td>
+                    <td>{{ population.SCIENTIFIC_NAME }}</td>
+                    <td>{{ population.CONSERVATION_STATUS }}</td>
+                    <td>{{ population.POPULATION_COUNT }}</td>
+                    <td>{{ population.POPULATION_TREND }}</td>
+                    <td>{{ population.DATE_ASSESSED }}</td>
+                    <td><a href="/population/{{ population.POPULATION_ID }}">Update</a></td>
+                    <td><a href="/delete_population/{{ population.POPULATION_ID }}">Delete</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </form>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="../static/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

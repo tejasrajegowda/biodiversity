@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+<head>
+    <script src="../static/js/color-modes.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.118.2">
+    <title>Wildlife Reserve Display · Bootstrap v5.3</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
+
+    <!-- Bootstrap CSS -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Your existing styles here -->
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid white;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="../static/sign-in.css" rel="stylesheet">
+</head>
+<body>
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+        <!-- Your existing SVG symbols here -->
+    </svg>
+
+    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+        <!-- Your existing theme toggle dropdown here -->
+    </div>
+
+    <main class="form-signin">
+        <form method="POST" action="/wildlife_reserve">
+            <h1 class="h3 mb-3 fw-normal">Wildlife Reserve Display</h1>
+
+            <!-- Your table code here -->
+            <table>
+                <tr>
+                    <th>RESERVE_ID</th>
+                    <th>NAME</th>
+                    <th>COORDINATES</th>
+                    <th>AREA</th>
+                    <th>PINCODE</th>
+                    <th>ICONIC_SPECIES</th>
+                    <th>ESTABLISHED_YEAR</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+                
+                {% for reserve in wildlife_reserve_data %}
+                <tr>
+                    <td>{{ reserve.RESERVE_ID }}</td>
+                    <td>{{ reserve.NAME }}</td>
+                    <td>{{ reserve.COORDINATES }}</td>
+                    <td>{{ reserve.AREA }}</td>
+                    <td>{{ reserve.PINCODE }}</td>
+                    <td>{{ reserve.ICONIC_SPECIES }}</td>
+                    <td>{{ reserve.ESTABLISHED_YEAR }}</td>
+                    <td><a href="/wildlife_reserve/{{ reserve.RESERVE_ID }}">Update</a></td>
+                    <td><a href="/delete_wildlife_reserve/{{ reserve.RESERVE_ID }}">Delete</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </form>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="../static/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

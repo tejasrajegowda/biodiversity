@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.118.2">
-    <title>Add Species · Bootstrap v5.3</title>
+    <title>Add Wildlife Reserve · Bootstrap v5.3</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
 
@@ -33,48 +33,42 @@
     </div>
 
     <main class="form-signin w-100 m-auto">
-        <form method="POST" action="/wildlife_reserve">
-            <h1 class="h3 mb-3 fw-normal">Add Wildlife Reserve</h1>
+        <form method="POST" action="/wildlife_reserve/{{ reserve_data.RESERVE_ID }}">
+            <h1 class="h3 mb-3 fw-normal">Update Wildlife Reserve</h1>
 
             <div class="form-floating">
-                <input type="text" class="form-control" id="reserveId" name="reserveId" placeholder="Reserve ID" required>
-                <label for="reserveId">Reserve ID</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Reserve Name" value="{{ reserve_data.NAME }}" required>
+                <label for="name">Reserve Name</label>
             </div>
 
             <div class="form-floating">
-                <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
-                <label for="name">Name</label>
-            </div>
-
-            <div class="form-floating">
-                <input type="text" class="form-control" id="coordinates" name="coordinates" placeholder="Coordinates" required>
+                <input type="text" class="form-control" id="coordinates" name="coordinates" placeholder="Coordinates" value="{{ reserve_data.COORDINATES }}" required>
                 <label for="coordinates">Coordinates</label>
             </div>
 
             <div class="form-floating">
-                <input type="text" class="form-control" id="area" name="area" placeholder="Area" required>
-                <label for="area">Area</label>
+                <input type="number" class="form-control" id="area" name="area" placeholder="Area (in sq. units)" value="{{ reserve_data.AREA }}" required>
+                <label for="area">Area (in sq. units)</label>
             </div>
 
             <div class="form-floating">
-                <input type="text" class="form-control" id="pincode" name="pincode" placeholder="Pincode" required>
+                <input type="number" class="form-control" id="pincode" name="pincode" placeholder="Pincode" value="{{ reserve_data.PINCODE }}" required>
                 <label for="pincode">Pincode</label>
             </div>
 
             <div class="form-floating">
-                <input type="text" class="form-control" id="iconicSpecies" name="iconicSpecies" placeholder="Iconic Species" required>
+                <input type="text" class="form-control" id="iconicSpecies" name="iconicSpecies" placeholder="Iconic Species" value="{{ reserve_data.ICONIC_SPECIES }}" required>
                 <label for="iconicSpecies">Iconic Species</label>
             </div>
 
             <div class="form-floating">
-                <input type="text" class="form-control" id="establishedYear" name="establishedYear" placeholder="Established Year" required>
+                <input type="number" class="form-control" id="establishedYear" name="establishedYear" placeholder="Established Year" value="{{ reserve_data.ESTABLISHED_YEAR }}" required>
                 <label for="establishedYear">Established Year</label>
             </div>
 
-            <button class="btn btn-primary w-100 py-2" type="submit">Add Wildlife Reserve</button>
+            <button class="btn btn-primary w-100 py-2" type="submit">Update Wildlife Reserve</button>
         </form>
     </main>
-
     <script src="../static/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

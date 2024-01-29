@@ -1,4 +1,4 @@
-<!-- delete_location.html -->
+<!-- delete_taxonomy.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.118.2">
-    <title>Delete Location</title>
+    <title>Delete Taxonomy</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/">
 
@@ -34,8 +34,8 @@
     </div>
     <main class="form-signin w-100 m-auto">
         <h2>Confirm Deletion</h2>
-        <p>Are you sure you want to delete all details about the location of this species?</p>
-        <form method="post" action="{{ url_for('delete_location', location_id=location_id) }}">
+        <p>Are you sure you want to delete all details about the taxonomy of this species?</p>
+        <form method="post" action="{{ url_for('delete_taxonomy', taxonomy_id=taxonomy_id) }}">
             
             <button class="btn btn-primary w-100 py-2" type="submit">DELETE</button>
         </form>
