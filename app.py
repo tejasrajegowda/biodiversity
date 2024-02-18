@@ -208,6 +208,49 @@ def species_exists(species_id):
     return result is not None
 
 
+# Route to show the stored procedure form
+@app.route('/stored_procedure', methods=['GET'])
+def show_stored_procedure_form():
+    return render_template('stored_procedure.html')
+
+# Route to handle the stored procedure request
+@app.route('/stored_procedure/<string:scientific_name>', methods=['GET'])
+def get_stored_procedure_data(scientific_name):
+    try:
+        # Call the stored procedure
+        cursor = mysql.connection.cursor()
+        cursor.callproc('GetSpeciesDataByScientificName', [scientific_name])
+
+        # Retrieve the result of the first SELECT statement (species data)
+        species_data = cursor.fetchone()
+
+        # Retrieve the result of the second SELECT statement (taxonomy data)
+        cursor.nextset()
+        taxonomy_data = cursor.fetchone()
+
+        # Retrieve the result of the third SELECT statement (population data)
+        cursor.nextset()
+        population_data = cursor.fetchone()
+
+        # Retrieve the result of the fourth SELECT statement (location data)
+        cursor.nextset()
+        location_data = cursor.fetchone()
+
+        # Retrieve the result of the fifth SELECT statement (wildlife reserve data)
+        cursor.nextset()
+        wildlife_reserve_data = cursor.fetchone()
+
+        cursor.close()
+
+        return render_template('stored_procedure.html', 
+                               species_data=species_data,
+                               taxonomy_data=taxonomy_data,
+                               population_data=population_data,
+                               location_data=location_data,
+                               wildlife_reserve_data=wildlife_reserve_data)
+
+    except Exception as e:
+        return f"Error: {str(e)}"
 
 
 
@@ -342,8 +385,18 @@ def add_population():
         # Retrieve data from the submitted form
         population_id = request.form.get('populationId')
         scientific_name = request.form.get('scientificName')
-        conservation_status = request.form.get('conservationStatus')
-        population_count = request.form.get('populationCount')
+        population_count = int(request.form.get('populationCount'))  # Convert to integer
+
+        # Determine conservation status based on population count
+        if population_count <= 500:
+            conservation_status = 'Critically Endangered'
+        elif 501 <= population_count <= 2000:
+            conservation_status = 'Endangered'
+        elif 2001 <= population_count <= 10000:
+            conservation_status = 'Vulnerable'
+        else:
+            conservation_status = 'Least Concern'
+
         population_trend = request.form.get('populationTrend')
         date_assessed = request.form.get('dateAssessed')
 
@@ -376,8 +429,17 @@ def update_population(population_id):
     try:
         # Retrieve data from the submitted form
         scientific_name = request.form.get('scientificName')
-        conservation_status = request.form.get('conservationStatus')
-        population_count = request.form.get('populationCount')
+        population_count = int(request.form.get('populationCount'))  # Convert to integer
+        # Determine conservation status based on updated population count
+        if population_count <= 500:
+            conservation_status = 'Critically Endangered'
+        elif 501 <= population_count <= 2000:
+            conservation_status = 'Endangered'
+        elif 2001 <= population_count <= 10000:
+            conservation_status = 'Vulnerable'
+        else:
+            conservation_status = 'Least Concern'
+
         population_trend = request.form.get('populationTrend')
         date_assessed = request.form.get('dateAssessed')
 
