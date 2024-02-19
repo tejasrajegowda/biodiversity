@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.118.2">
+    <title>Species Details</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles -->
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid white;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+
+</head>
+<body>
+<h2>Species Details</h2>
+<table border="1">
+    <tr>
+        <th>Common Name</th>
+        <th>Scientific Name</th>
+        <th>Habitat Type</th>
+        <th>System Type</th>
+        <th>Lifespan</th>
+        <th>Generation Length</th>
+    </tr>
+    <tr>
+        <td>{{ species_data.species_common_name }}</td>
+        <td>{{ species_data.species_scientific_name }}</td>
+        <td>{{ species_data.species_habitat_type }}</td>
+        <td>{{ species_data.species_system_type }}</td>
+        <td>{{ species_data.species_lifespan }}</td>
+        <td>{{ species_data.species_generation_length }}</td>
+    </tr>
+</table>
+<br>
+<h2>Taxonomy Data</h2>
+<table border="1">
+    <tr>
+        <th>Kingdom</th>
+        <th>Phylum</th>
+        <th>Class</th>
+        <th>Order</th>
+        <th>Family</th>
+        <th>Genus</th>
+    </tr>
+    
+    <tr>
+        <td>{{ taxonomy_data.KINGDOM }}</td>
+        <td>{{ taxonomy_data.PHYLUM }}</td>
+        <td>{{ taxonomy_data.SP_CLASS }}</td>
+        <td>{{ taxonomy_data.ORDERS }}</td>
+        <td>{{ taxonomy_data.FAMILY }}</td>
+        <td>{{ taxonomy_data.GENUS }}</td>
+    </tr>
+</table>
+<br>
+<h2>Population Data</h2>
+<table border="1">
+    <tr>
+        <th>Population Count</th>
+        <th>Conservation Status</th>
+        <th>Population Trend</th>
+        <th>Date Assessed</th>
+    </tr>
+    <tr>
+        <td>{{ population_data.POPULATION_COUNT }}</td>
+        <td>{{ population_data.CONSERVATION_STATUS }}</td>
+        <td>{{ population_data.POPULATION_TREND }}</td>
+        <td>{{ population_data.DATE_ASSESSED }}</td>
+    </tr>
+</table>
+<br>
+<h2>Location Data</h2>
+<table border="1">
+    <tr>
+        <th>Geographic Region</th>
+        <th>State</th>
+        <th>Pincode</th>
+    </tr>
+    <tr>
+        <td>{{ location_data.GEOGRAPHIC_REGION }}</td>
+        <td>{{ location_data.STATE }}</td>
+        <td>{{ location_data.PINCODE }}</td>
+    </tr>
+</table>
+<br>
+<h2>Wildlife Reserve Data</h2>
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Coordinates</th>
+        <th>Area</th>
+        <th>Pincode</th>
+        <th>Iconic Species</th>
+        <th>Established Year</th>
+    </tr>
+    <tr>
+        <td>{{ wildlife_reserve_data.NAME }}</td>
+        <td>{{ wildlife_reserve_data.COORDINATES }}</td>
+        <td>{{ wildlife_reserve_data.AREA }}</td>
+        <td>{{ wildlife_reserve_data.PINCODE }}</td>
+        <td>{{ wildlife_reserve_data.ICONIC_SPECIES }}</td>
+        <td>{{ wildlife_reserve_data.ESTABLISHED_YEAR }}</td>
+    </tr>
+</table>
+
+<!-- Bootstrap JS -->
+<script src="../static/js/bootstrap.bundle.min.js"></script>
+
+<!-- Your JavaScript code here -->
+<script src="../static/js/color-modes.js"></script>
+</body>
+</html>

@@ -57,6 +57,7 @@
                     <th>GENERATION_LENGTH</th>
                     <th>Update</th>
                     <th>Delete</th>
+                    <th>More</th> <!-- New column -->
                 </tr>
                 
                 {% for species in species_data %}
@@ -70,6 +71,7 @@
                     <td>{{ species.GENERATION_LENGTH }}</td>
                     <td><a href="/species/{{ species.SPECIES_ID }}">Update</a></td>
                     <td><a href="/delete_species/{{ species.SPECIES_ID }}">Delete</a></td>
+                    <td><a href="/stored_procedure/{{ species.SCIENTIFIC_NAME }}">More</a></td> <!-- New column value -->
                 </tr>
                 {% endfor %}
             </table>
