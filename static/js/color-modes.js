@@ -21,9 +21,9 @@
 
   const setTheme = theme => {
     if (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.documentElement.setAttribute('data-bs-theme', 'dark')
+      document.documentElement.setAttribute('data-bs-theme', 'dark');
     } else {
-      document.documentElement.setAttribute('data-bs-theme', theme)
+      document.documentElement.setAttribute('data-bs-theme', theme);
     }
   }
 
@@ -76,5 +76,20 @@
           showActiveTheme(theme, true)
         })
       })
+
+    // Retrieve the dark mode toggle status from localStorage
+    const savedTheme = localStorage.getItem('theme');
+    const darkModeToggle = document.getElementById('darkModeToggle');
+
+    if (darkModeToggle) {
+      darkModeToggle.checked = savedTheme === 'dark';
+
+      darkModeToggle.addEventListener('change', () => {
+        const newTheme = darkModeToggle.checked ? 'dark' : 'light';
+        setStoredTheme(newTheme);
+        setTheme(newTheme);
+        showActiveTheme(newTheme, true);
+      });
+    }
   })
 })()

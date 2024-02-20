@@ -28,6 +28,12 @@
         <!-- Your existing SVG symbols here -->
     </svg>
 
+    <!-- Dark mode toggle button -->
+    <div class="custom-control custom-switch position-fixed bottom-0 end-0 mb-3 me-3">
+        <input type="checkbox" class="custom-control-input" id="darkModeToggle">
+        <label class="custom-control-label" for="darkModeToggle">Dark Mode</label>
+    </div>
+
     <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
         <!-- Your existing theme toggle dropdown here -->
     </div>
@@ -56,5 +62,27 @@
     </main>
 
     <script src="../static/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+
+            darkModeToggle.addEventListener('change', function () {
+                if (darkModeToggle.checked) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+
+            // Check the user's preference from localStorage
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                darkModeToggle.checked = savedTheme === 'dark';
+            }
+        });
+    </script>
 </body>
 </html>
