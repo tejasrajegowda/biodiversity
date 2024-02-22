@@ -80,7 +80,7 @@ def show_user_form():
 def add_user():
     try:
         # Retrieve data from the submitted form
-        user_id = request.form.get('userId')
+        
         username = request.form.get('username')
         name = request.form.get('name')
         role = request.form.get('role')
@@ -89,8 +89,8 @@ def add_user():
 
         # Use Flask-MySQLdb to execute an INSERT query
         cur = mysql.connection.cursor()
-        query = "INSERT INTO users (USER_ID, USERNAME, NAME, ROLE, EMAIL, PASSWORD) VALUES (%s, %s, %s, %s, %s, %s)"
-        values = (user_id, username, name, role, email, password)
+        query = "INSERT INTO users ( USERNAME, NAME, ROLE, EMAIL, PASSWORD) VALUES (%s, %s, %s, %s, %s)"
+        values = (username, name, role, email, password)
         cur.execute(query, values)
         mysql.connection.commit()
         cur.close()
@@ -110,7 +110,7 @@ def add_user():
 @app.route('/species_disp', methods=['GET'])
 def get_species():
     cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM species')
+    cur.execute('SELECT * FROM species ORDER BY species_id')
     species_data = cur.fetchall()
     cur.close()
     return render_template('species_disp.html', species_data=species_data)
@@ -125,7 +125,7 @@ def show_species_form():
 def add_species():
     try:
         # Retrieve data from the submitted form
-        species_id = request.form.get('speciesId')
+
         common_name = request.form.get('commonName')
         scientific_name = request.form.get('scientificName')
         habitat_type = request.form.get('habitatType')
@@ -135,16 +135,16 @@ def add_species():
 
         # Use Flask-MySQLdb to execute an INSERT query
         cur = mysql.connection.cursor()
-        query = "INSERT INTO species (SPECIES_ID, COMMON_NAME, SCIENTIFIC_NAME, HABITAT_TYPE, SYSTEM_TYPE, LIFESPAN, GENERATION_LENGTH) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-        values = (species_id, common_name, scientific_name, habitat_type, system_type, lifespan, generation_length)
+        query = "INSERT INTO species (COMMON_NAME, SCIENTIFIC_NAME, HABITAT_TYPE, SYSTEM_TYPE, LIFESPAN, GENERATION_LENGTH) VALUES (%s, %s, %s, %s, %s, %s)"
+        values = (common_name, scientific_name, habitat_type, system_type, lifespan, generation_length)
         cur.execute(query, values)
         mysql.connection.commit()
         cur.close()
 
-        # Return a success message
-        return jsonify({"message": "Species added successfully"}), 201
+         # Redirect to species_disp page upon success
+        return redirect(url_for('get_species'))
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return render_template('error.html')
 
 
 
@@ -178,10 +178,10 @@ def update_species(species_id):
         mysql.connection.commit()
         cur.close()
 
-        # Return a success message
-        return jsonify({"message": "Species updated successfully"}), 200
+         # Redirect to species_disp page upon success
+        return redirect(url_for('get_species'))
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return render_template('error.html')
 
 #Route to handle SPECIES delete form submission
 @app.route('/delete_species/<int:species_id>', methods=['GET', 'POST'])
@@ -197,7 +197,9 @@ def delete_species(species_id):
         cur.execute('DELETE FROM species WHERE species_id = %s', (species_id,))
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message': 'Species deleted successfully'})
+         # Redirect to species_disp page upon success
+        return redirect(url_for('get_species'))
+    
 
 # Helper function to check if a species with the given ID exists
 def species_exists(species_id):
@@ -276,7 +278,7 @@ def show_taxonomy_form():
 def add_taxonomy():
     try:
         # Retrieve data from the submitted form
-        taxonomy_id = request.form.get('taxonomyId')
+        
         scientific_name = request.form.get('scientificName')
         kingdom = request.form.get('kingdom')
         phylum = request.form.get('phylum')
@@ -287,8 +289,8 @@ def add_taxonomy():
 
         # Use Flask-MySQLdb to execute an INSERT query
         cur = mysql.connection.cursor()
-        query = "INSERT INTO taxonomy (TAXONOMY_ID, SCIENTIFIC_NAME, KINGDOM, PHYLUM, SP_CLASS, ORDERS, FAMILY, GENUS) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-        values = (taxonomy_id, scientific_name, kingdom, phylum, sp_class, orders, family, genus)
+        query = "INSERT INTO taxonomy (SCIENTIFIC_NAME, KINGDOM, PHYLUM, SP_CLASS, ORDERS, FAMILY, GENUS) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        values = (scientific_name, kingdom, phylum, sp_class, orders, family, genus)
         cur.execute(query, values)
         mysql.connection.commit()
         cur.close()
@@ -331,7 +333,7 @@ def update_taxonomy(taxonomy_id):
         # Return a success message
         return jsonify({"message": "Taxonomy updated successfully"}), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return render_template('error.html', error=str(e)), 500
 
 
 
@@ -383,7 +385,7 @@ def show_population_form():
 def add_population():
     try:
         # Retrieve data from the submitted form
-        population_id = request.form.get('populationId')
+        
         scientific_name = request.form.get('scientificName')
         population_count = int(request.form.get('populationCount'))  # Convert to integer
 
@@ -402,8 +404,8 @@ def add_population():
 
         # Use Flask-MySQLdb to execute an INSERT query
         cur = mysql.connection.cursor()
-        query = "INSERT INTO population (POPULATION_ID, SCIENTIFIC_NAME, CONSERVATION_STATUS, POPULATION_COUNT, POPULATION_TREND, DATE_ASSESSED) VALUES (%s, %s, %s, %s, %s, %s)"
-        values = (population_id, scientific_name, conservation_status, population_count, population_trend, date_assessed)
+        query = "INSERT INTO population (SCIENTIFIC_NAME, CONSERVATION_STATUS, POPULATION_COUNT, POPULATION_TREND, DATE_ASSESSED) VALUES (%s, %s, %s, %s, %s)"
+        values = (scientific_name, conservation_status, population_count, population_trend, date_assessed)
         cur.execute(query, values)
         mysql.connection.commit()
         cur.close()
@@ -507,7 +509,7 @@ def show_location_form():
 def add_location():
     try:
         # Retrieve data from the submitted form
-        location_id = request.form.get('locationId')
+        
         scientific_name = request.form.get('scientificName')
         geographic_region = request.form.get('geographicRegion')
         state = request.form.get('state')
@@ -515,8 +517,8 @@ def add_location():
 
         # Use Flask-MySQLdb to execute an INSERT query
         cur = mysql.connection.cursor()
-        query = "INSERT INTO location (LOCATION_ID, SCIENTIFIC_NAME, GEOGRAPHIC_REGION, STATE, PINCODE) VALUES (%s, %s, %s, %s, %s)"
-        values = (location_id, scientific_name, geographic_region, state, pincode)
+        query = "INSERT INTO location (SCIENTIFIC_NAME, GEOGRAPHIC_REGION, STATE, PINCODE) VALUES (%s, %s, %s, %s)"
+        values = (scientific_name, geographic_region, state, pincode)
         cur.execute(query, values)
         mysql.connection.commit()
         cur.close()
@@ -530,7 +532,7 @@ def add_location():
 @app.route('/location/<int:location_id>', methods=['GET'])
 def show_location_upd_form(location_id):
     cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM location WHERE LOCATION_ID = %s', (location_id,))
+    cur.execute('SELECT * FROM location ORDER BY LOCATION_ID = %s', (location_id,))
     location_data = cur.fetchone()
     cur.close()
     return render_template('upd_location.html', location_data=location_data)
@@ -606,18 +608,18 @@ def show_wildlife_reserve_form():
 def add_wildlife_reserve():
     try:
         # Retrieve data from the submitted form
-        reserve_id = request.form.get('reserveId')
+        
         name = request.form.get('name')
         coordinates = request.form.get('coordinates')
         area = request.form.get('area')
-        pincode = request.form.get('pincode')
+        
         iconic_species = request.form.get('iconicSpecies')
         established_year = request.form.get('establishedYear')
 
         # Use Flask-MySQLdb to execute an INSERT query
         cur = mysql.connection.cursor()
-        query = "INSERT INTO wildlife_reserve (RESERVE_ID, NAME, COORDINATES, AREA, PINCODE, ICONIC_SPECIES, ESTABLISHED_YEAR) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-        values = (reserve_id, name, coordinates, area, pincode, iconic_species, established_year)
+        query = "INSERT INTO wildlife_reserve (NAME, COORDINATES, AREA, ICONIC_SPECIES, ESTABLISHED_YEAR) VALUES (%s, %s, %s, %s, %s)"
+        values = (name, coordinates, area, iconic_species, established_year)
         cur.execute(query, values)
         mysql.connection.commit()
         cur.close()
@@ -710,17 +712,17 @@ def show_observation_form():
 def add_observation():
     try:
         # Retrieve data from the submitted form
-        observation_id = request.form.get('observationId')
+        
         username = request.form.get('username')
         species_observed = request.form.get('speciesObserved')
         reserve_id = request.form.get('reserveId')
-        pincode = request.form.get('pincode')
+        
         observation_date = request.form.get('observationDate')
 
         # Use Flask-MySQLdb to execute an INSERT query
         cur = mysql.connection.cursor()
-        query = "INSERT INTO observations (OBSERVATION_ID, USERNAME, SPECIES_OBSERVED, RESERVE_ID, PINCODE, OBSERVATION_DATE) VALUES (%s, %s, %s, %s, %s, %s)"
-        values = (observation_id, username, species_observed, reserve_id, pincode, observation_date)
+        query = "INSERT INTO observations (USERNAME, SPECIES_OBSERVED, RESERVE_ID, OBSERVATION_DATE) VALUES (%s, %s, %s, %s)"
+        values = (username, species_observed, reserve_id, observation_date)
         cur.execute(query, values)
         mysql.connection.commit()
         cur.close()
