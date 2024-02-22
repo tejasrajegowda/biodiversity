@@ -390,7 +390,9 @@ def add_population():
         population_count = int(request.form.get('populationCount'))  # Convert to integer
 
         # Determine conservation status based on population count
-        if population_count <= 500:
+        if population_count == 0:
+            conservation_status = 'Extinct'
+        elif 1<= population_count <= 500:
             conservation_status = 'Critically Endangered'
         elif 501 <= population_count <= 2000:
             conservation_status = 'Endangered'
