@@ -18,6 +18,34 @@
 
     <style>
         /* Your existing styles here */
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+        }
+
+        main {
+            max-width: 400px; /* Adjust as needed */
+        }
+
+        /* Add styles for the image */
+        .form-image {
+            max-width: 100%; /* Adjust as needed */
+            height: auto;
+            position: relative;
+        }
+        .image-text {
+            position: absolute;
+            top: 50%;
+            left: 60%;
+            transform: translate(-50%, -50%);
+            color: #fff; /* Adjust the text color */
+            font-size: 80px; /* Adjust the font size */
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Add text shadow for better visibility */
+        }
     </style>
 
     <!-- Custom styles for this template -->
@@ -32,11 +60,14 @@
         <!-- Your existing theme toggle dropdown here -->
     </div>
 
-    <main class="form-signin w-100 m-auto">
+    <main class="form-signin">
         <form method="POST" action="/users">
             <h1 class="h3 mb-3 fw-normal">Add User</h1>
 
-            
+            <!--div class="form-floating">
+                <input type="text" class="form-control" id="userId" name="userId" placeholder="User ID" required>
+                <label for="userId">User ID</label>
+            </div-->
 
             <div class="form-floating">
                 <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
@@ -66,6 +97,12 @@
             <button class="btn btn-primary w-100 py-2" type="submit">Add User</button>
         </form>
     </main>
+
+    <!-- Add image on the right side -->
+    <div class="d-none d-lg-block">
+        <img src="../static/assets/img/signinbg.jpeg" alt="Image" class="form-image">
+        <div class="image-text">BIODIVERSITY MANAGEMENT SYSTEM</div>
+    </div>
 
     <script src="../static/js/bootstrap.bundle.min.js"></script>
 </body>

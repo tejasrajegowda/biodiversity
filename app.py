@@ -98,7 +98,7 @@ def add_user():
         # Return a success message
         return redirect('/home')
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return render_template('error.html', error=str(e)), 500
 
 
 
@@ -141,10 +141,11 @@ def add_species():
         mysql.connection.commit()
         cur.close()
 
-         # Redirect to species_disp page upon success
+        # Redirect to the '/species_disp' route after successful addition
         return redirect(url_for('get_species'))
     except Exception as e:
-        return render_template('error.html')
+        # Redirect to the 'error.html' template in case of an error
+        return render_template('error.html', error=str(e)), 500
 
 
 
@@ -178,10 +179,11 @@ def update_species(species_id):
         mysql.connection.commit()
         cur.close()
 
-         # Redirect to species_disp page upon success
+        # Redirect to the '/species_disp' route after successful addition
         return redirect(url_for('get_species'))
     except Exception as e:
-        return render_template('error.html')
+        # Redirect to the 'error.html' template in case of an error
+        return render_template('error.html', error=str(e)), 500
 
 #Route to handle SPECIES delete form submission
 @app.route('/delete_species/<int:species_id>', methods=['GET', 'POST'])
@@ -296,9 +298,9 @@ def add_taxonomy():
         cur.close()
 
         # Return a success message
-        return jsonify({"message": "Taxonomy entry added successfully"}), 201
+        return redirect(url_for('get_taxonomy'))
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return render_template('error.html', error=str(e)), 500
 
 # Route to show the TAXONOMY update form
 @app.route('/taxonomy/<int:taxonomy_id>', methods=['GET'])
@@ -331,7 +333,7 @@ def update_taxonomy(taxonomy_id):
         cur.close()
 
         # Return a success message
-        return jsonify({"message": "Taxonomy updated successfully"}), 200
+        return redirect(url_for('get_taxonomy'))
     except Exception as e:
         return render_template('error.html', error=str(e)), 500
 
@@ -351,7 +353,7 @@ def delete_taxonomy(taxonomy_id):
         cur.execute('DELETE FROM taxonomy WHERE TAXONOMY_ID = %s', (taxonomy_id,))
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message': 'Taxonomy deleted successfully'})
+        return redirect(url_for('get_taxonomy'))
 
 # Helper function to check if a taxonomy with the given ID exists
 def taxonomy_exists(taxonomy_id):
@@ -412,10 +414,11 @@ def add_population():
         mysql.connection.commit()
         cur.close()
 
-        # Return a success message
-        return jsonify({"message": "Population added successfully"}), 201
+        # Redirect after successful addition
+        return redirect(url_for('get_population'))
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        # Redirect to the 'error.html' template in case of an error
+        return render_template('error.html', error=str(e)), 500
     
 
 # Route to show the POPULATION update form
@@ -435,7 +438,9 @@ def update_population(population_id):
         scientific_name = request.form.get('scientificName')
         population_count = int(request.form.get('populationCount'))  # Convert to integer
         # Determine conservation status based on updated population count
-        if population_count <= 500:
+        if population_count == 0:
+            conservation_status = 'Extinct'
+        elif 1<= population_count <= 500:
             conservation_status = 'Critically Endangered'
         elif 501 <= population_count <= 2000:
             conservation_status = 'Endangered'
@@ -455,10 +460,11 @@ def update_population(population_id):
         mysql.connection.commit()
         cur.close()
 
-        # Return a success message
-        return jsonify({"message": "Population updated successfully"}), 200
+        # Redirect after successful addition
+        return redirect(url_for('get_population'))
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        # Redirect to the 'error.html' template in case of an error
+        return render_template('error.html', error=str(e)), 500
 
 
 
@@ -477,7 +483,7 @@ def delete_population(population_id):
         cur.execute('DELETE FROM population WHERE POPULATION_ID = %s', (population_id,))
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message': 'Population deleted successfully'})
+        return redirect(url_for('get_population'))
 
 # Helper function to check if a population with the given ID exists
 def population_exists(population_id):
@@ -526,9 +532,9 @@ def add_location():
         cur.close()
 
         # Return a success message
-        return jsonify({"message": "Location added successfully"}), 201
+        return redirect(url_for('get_location'))
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return render_template('error.html', error=str(e)), 500
 
 # Route to show the LOCATION update form
 @app.route('/location/<int:location_id>', methods=['GET'])
@@ -558,9 +564,10 @@ def update_location(location_id):
         cur.close()
 
         # Return a success message
-        return jsonify({"message": "Location updated successfully"}), 200
+        return redirect(url_for('get_location'))
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return render_template('error.html', error=str(e)), 500
+    
 
 #delete location operation
 @app.route('/delete_location/<string:location_id>', methods=['GET', 'POST'])
@@ -576,7 +583,7 @@ def delete_location(location_id):
         cur.execute('DELETE FROM location WHERE LOCATION_ID = %s', (location_id,))
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message': 'Location deleted successfully'})
+        return redirect(url_for('get_location'))
 
 # Helper function to check if a location with the given ID exists
 def location_exists(location_id):
@@ -626,11 +633,11 @@ def add_wildlife_reserve():
         mysql.connection.commit()
         cur.close()
 
-        # Return a success message
-        return jsonify({"message": "Wildlife reserve added successfully"}), 201
+         # Return a success message
+        return redirect(url_for('get_wildlife_reserve'))
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
+        return render_template('error.html', error=str(e)), 500
+    
 
 # Route to show the WILDLIFE_RESERVE update form
 @app.route('/wildlife_reserve/<int:reserve_id>', methods=['GET'])
@@ -661,10 +668,10 @@ def update_wildlife_reserve(reserve_id):
         mysql.connection.commit()
         cur.close()
 
-        # Return a success message
-        return jsonify({"message": "Wildlife reserve updated successfully"}), 200
+         # Return a success message
+        return redirect(url_for('get_wildlife_reserve'))
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return render_template('error.html', error=str(e)), 500
 
 
 
@@ -682,7 +689,7 @@ def delete_wildlife_reserve(reserve_id):
         cur.execute('DELETE FROM wildlife_reserve WHERE RESERVE_ID = %s', (reserve_id,))
         mysql.connection.commit()
         cur.close()
-        return jsonify({'message': 'Wildlife Reserve deleted successfully'})
+        return redirect(url_for('get_wildlife_reserve'))
 
 # Helper function to check if a wildlife reserve with the given ID exists
 def wildlife_reserve_exists(reserve_id):
@@ -698,11 +705,16 @@ def wildlife_reserve_exists(reserve_id):
 # Display all observations
 @app.route('/observations_disp', methods=['GET'])
 def get_observations():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM observations')
-    observations_data = cur.fetchall()
-    cur.close()
-    return jsonify(observations_data)
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute('SELECT * FROM observations')
+        observations_data = cur.fetchall()
+        cur.close()
+        return render_template('observations_disp.html', observation_data=observations_data)
+    except Exception as e:
+        # Handle any errors gracefully
+        return f"An error occurred: {e}"
+
 
 # Route to show the form for adding observation
 @app.route('/observations', methods=['GET'])
@@ -730,9 +742,9 @@ def add_observation():
         cur.close()
 
         # Return a success message
-        return jsonify({"message": "Observation added successfully"}), 201
+        return redirect(url_for('get_observations'))
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return render_template('error.html', error=str(e)), 500
     
 
 

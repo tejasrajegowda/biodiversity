@@ -18,6 +18,43 @@
 
     <style>
         /* Your existing styles here */
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+        }
+
+        main {
+            max-width: 400px; /* Adjust as needed */
+        }
+
+        /* Add styles for the image */
+        .form-image {
+            max-width: 100%; /* Adjust as needed */
+            height: auto;
+            position: relative;
+        }
+
+        .image-text {
+            position: absolute;
+            top: 50%;
+            left: 60%;
+            transform: translate(-50%, -50%);
+            color: #fff; /* Adjust the text color */
+            font-size: 80px; /* Adjust the font size */
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Add text shadow for better visibility */
+        }
+
+        /* Adjust dark mode button position */
+        .dark-mode-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            margin: 1rem;
+        }
     </style>
 
     <!-- Custom styles for this template -->
@@ -29,7 +66,7 @@
     </svg>
 
     <!-- Dark mode toggle button -->
-    <div class="custom-control custom-switch position-fixed bottom-0 end-0 mb-3 me-3">
+    <div class="custom-control custom-switch dark-mode-container">
         <input type="checkbox" class="custom-control-input" id="darkModeToggle">
         <label class="custom-control-label" for="darkModeToggle">Dark Mode</label>
     </div>
@@ -60,6 +97,12 @@
         <!-- Added anchor tag for registration link -->
         <p class="mt-3">Don't have an account already?<br> <a href="../users">Register here</a></p>
     </main>
+
+    <!-- Add image on the right side -->
+    <div class="d-none d-lg-block">
+        <img src="../static/assets/img/signinbg.jpeg" alt="Image" class="form-image">
+        <div class="image-text">BIODIVERSITY MANAGEMENT SYSTEM</div>
+    </div>
 
     <script src="../static/js/bootstrap.bundle.min.js"></script>
     <script>
