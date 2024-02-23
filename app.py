@@ -391,7 +391,7 @@ def add_population():
         scientific_name = request.form.get('scientificName')
         population_count = int(request.form.get('populationCount'))  # Convert to integer
 
-        # Determine conservation status based on population count
+        # Determine conservation status based on population count(TRIGGER)
         if population_count == 0:
             conservation_status = 'Extinct'
         elif 1<= population_count <= 500:
@@ -536,16 +536,16 @@ def add_location():
     except Exception as e:
         return render_template('error.html', error=str(e)), 500
 
-# Route to show the LOCATION update form
+# Route to show the location update form
 @app.route('/location/<int:location_id>', methods=['GET'])
 def show_location_upd_form(location_id):
     cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM location ORDER BY LOCATION_ID = %s', (location_id,))
+    cur.execute('SELECT * FROM location WHERE LOCATION_ID = %s', (location_id,))
     location_data = cur.fetchone()
     cur.close()
     return render_template('upd_location.html', location_data=location_data)
 
-# Route to handle LOCATION update form submission
+# Route to handle location update form submission
 @app.route('/location/<int:location_id>', methods=['POST'])
 def update_location(location_id):
     try:
@@ -563,10 +563,11 @@ def update_location(location_id):
         mysql.connection.commit()
         cur.close()
 
-        # Return a success message
+         # Return a success message
         return redirect(url_for('get_location'))
     except Exception as e:
         return render_template('error.html', error=str(e)), 500
+
     
 
 #delete location operation
@@ -662,8 +663,8 @@ def update_wildlife_reserve(reserve_id):
 
         # Use Flask-MySQLdb to execute an UPDATE query
         cur = mysql.connection.cursor()
-        query = "UPDATE wildlife_reserve SET NAME=%s, COORDINATES=%s, AREA=%s, PINCODE=%s, ICONIC_SPECIES=%s, ESTABLISHED_YEAR=%s WHERE RESERVE_ID=%s"
-        values = (name, coordinates, area, pincode, iconic_species, established_year, reserve_id)
+        query = "UPDATE wildlife_reserve SET NAME=%s, COORDINATES=%s, AREA=%s, ICONIC_SPECIES=%s, ESTABLISHED_YEAR=%s WHERE RESERVE_ID=%s"
+        values = (name, coordinates, area, iconic_species, established_year, reserve_id)
         cur.execute(query, values)
         mysql.connection.commit()
         cur.close()
