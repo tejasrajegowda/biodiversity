@@ -391,7 +391,7 @@ def add_population():
         scientific_name = request.form.get('scientificName')
         population_count = int(request.form.get('populationCount'))  # Convert to integer
 
-        # Determine conservation status based on population count
+        # Determine conservation status based on population count(TRIGGER)
         if population_count == 0:
             conservation_status = 'Extinct'
         elif 1<= population_count <= 500:
