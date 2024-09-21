@@ -6,7 +6,7 @@ The **Biodiversity Monitoring System** is a web application designed to monitor 
 ## Features
 - **Species Data Management**: Add, update, and manage species data.
 - **Ecosystem Monitoring**: Monitor environmental variables impacting biodiversity.
-- **Data Visualization**: View trends and reports through interactive graphs.
+- **Data Visualization**: View trends and reports.
 - **User Authentication**: Secure login and user roles for data submission and access.
 
 ## Technologies Used
